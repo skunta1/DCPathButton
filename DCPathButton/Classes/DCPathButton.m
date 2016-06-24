@@ -70,6 +70,7 @@
         //
         if (centerButtonFrame.size.width == 0 && centerButtonFrame.size.height == 0) {
             [self configureViewsLayoutWithButtonSize:self.centerImage.size];
+            self.dcButtonCenter = self.foldCenter;
         }
         else {
             [self configureViewsLayoutWithButtonSize:centerButtonFrame.size];
