@@ -132,6 +132,7 @@
     UIBlurEffect* effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     _visualEffectView = [[UIVisualEffectView alloc] initWithEffect:effect];
     _visualEffectView.frame = CGRectMake(0, 0, self.bloomSize.width * 2, self.bloomSize.height * 2);
+    _visualEffectView.alpha = 0.0f;
 }
 
 #pragma mark - Configure Button Sound
@@ -473,7 +474,7 @@
                           delay:0.0f
                         options:UIViewAnimationOptionCurveEaseIn
                      animations:^{
-                         _visualEffectView.alpha = 0.0618f;
+                         _visualEffectView.alpha = 0.75f;
                      }
                      completion:nil];
     
