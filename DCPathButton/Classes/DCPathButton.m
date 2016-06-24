@@ -132,7 +132,6 @@
     UIBlurEffect* effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     _visualEffectView = [[UIVisualEffectView alloc] initWithEffect:effect];
     _visualEffectView.frame = CGRectMake(0, 0, self.bloomSize.width * 2, self.bloomSize.height * 2);
-    _visualEffectView.alpha = 0.0f;
 }
 
 #pragma mark - Configure Button Sound
@@ -364,14 +363,6 @@
                          completion:nil];
     }
     
-    [UIView animateWithDuration:0.1f
-                          delay:self.basicDuration + 0.05f
-                        options:UIViewAnimationOptionCurveLinear
-                     animations:^{
-                         _visualEffectView.alpha = 0.0f;
-                     }
-                     completion:nil];
-    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
         // Remove the button items from the superview
@@ -467,17 +458,7 @@
     self.center = CGPointMake(self.bloomSize.width / 2, self.bloomSize.height / 2);
     
     [self insertSubview:self.visualEffectView belowSubview:self.pathCenterButton];
-    
-    // 3. Excute the visual effect view alpha animation
-    //
-    [UIView animateWithDuration:0.0618f * 3
-                          delay:0.0f
-                        options:UIViewAnimationOptionCurveEaseIn
-                     animations:^{
-                         _visualEffectView.alpha = 0.75f;
-                     }
-                     completion:nil];
-    
+        
     // 4. Excute the center button rotation animation
     //
     if (self.allowCenterButtonRotation) {
