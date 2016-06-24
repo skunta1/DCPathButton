@@ -152,11 +152,6 @@ typedef NS_ENUM(NSUInteger, kDCPathButtonBloomDirection) {
 @property (assign, nonatomic) BOOL allowCenterButtonRotation;
 
 /*!
- *  Color of the backdrop view when `DCPathButton` object's sub items are shown.
- */
-@property (strong, nonatomic) UIColor *bottomViewColor;
-
-/*!
  *  Direction of `DCPathButton` object's bloom animation.
  */
 @property (assign, nonatomic) kDCPathButtonBloomDirection bloomDirection;

@@ -26,7 +26,7 @@
 @property (assign, nonatomic) CGPoint expandCenter;
 @property (assign, nonatomic) CGPoint pathCenterButtonBloomCenter;
 
-@property (strong, nonatomic) UIView *bottomView;
+@property (strong, nonatomic) UIVisualEffectView* visualEffectView;
 @property (strong, nonatomic) UIButton *pathCenterButton;
 @property (strong, nonatomic) NSMutableArray *itemButtons;
 
@@ -88,8 +88,6 @@
 
         _allowSounds = YES;
         
-        _bottomViewColor = [UIColor blackColor];
-        
         _allowSubItemRotation = YES;
         
         _basicDuration = 0.3f;
@@ -130,23 +128,9 @@
     _pathCenterButton.center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
     [self addSubview:_pathCenterButton];
     
-    // Configure bottom view
-    //
-    _bottomView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.bloomSize.width * 2, self.bloomSize.height * 2)];
-    _bottomView.backgroundColor = self.bottomViewColor;
-    _bottomView.alpha = 0.0f;
-    
-}
-
-#pragma mark - Configure Bottom View Color
-
-- (void)setBottomViewColor:(UIColor *)bottomViewColor {
-    
-    if (bottomViewColor) {
-        _bottomView.backgroundColor = bottomViewColor;
-    }
-    _bottomViewColor = bottomViewColor;
-    
+    UIBlurEffect* effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    _visualEffectView = [[UIVisualEffectView alloc] initWithEffect:effect];
+    _visualEffectView.frame = CGRectMake(0, 0, self.bloomSize.width * 2, self.bloomSize.height * 2);
 }
 
 #pragma mark - Configure Button Sound
@@ -382,7 +366,7 @@
                           delay:self.basicDuration + 0.05f
                         options:UIViewAnimationOptionCurveLinear
                      animations:^{
-                         _bottomView.alpha = 0.0f;
+                         _visualEffectView.alpha = 0.0f;
                      }
                      completion:nil];
     
@@ -397,7 +381,7 @@
         
         self.pathCenterButton.center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
         
-        [self.bottomView removeFromSuperview];
+        [self.visualEffectView removeFromSuperview];
     });
     
     _bloom = NO;
@@ -480,15 +464,15 @@
     self.frame = CGRectMake(0, 0, self.bloomSize.width, self.bloomSize.height);
     self.center = CGPointMake(self.bloomSize.width / 2, self.bloomSize.height / 2);
     
-    [self insertSubview:self.bottomView belowSubview:self.pathCenterButton];
+    [self insertSubview:self.visualEffectView belowSubview:self.pathCenterButton];
     
-    // 3. Excute the bottom view alpha animation
+    // 3. Excute the visual effect view alpha animation
     //
     [UIView animateWithDuration:0.0618f * 3
                           delay:0.0f
                         options:UIViewAnimationOptionCurveEaseIn
                      animations:^{
-                         _bottomView.alpha = 0.618f;
+                         _visualEffectView.alpha = 0.0618f;
                      }
                      completion:nil];
     
