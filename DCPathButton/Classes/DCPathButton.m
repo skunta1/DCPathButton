@@ -7,6 +7,7 @@
 //
 
 #import "DCPathButton.h"
+#import "DCPathButtonCollectionViewDataSource.h"
 
 @interface DCPathButton ()<DCPathItemButtonDelegate>
 
@@ -27,6 +28,8 @@
 @property (assign, nonatomic) CGPoint pathCenterButtonBloomCenter;
 
 @property (strong, nonatomic) UIVisualEffectView* visualEffectView;
+@property (strong, nonatomic) UICollectionView* collectionView;
+@property (strong, nonatomic) DCPathButtonCollectionViewDataSource* source;
 @property (strong, nonatomic) UIButton *pathCenterButton;
 @property (strong, nonatomic) NSMutableArray *itemButtons;
 
@@ -131,7 +134,18 @@
     
     UIBlurEffect* effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     _visualEffectView = [[UIVisualEffectView alloc] initWithEffect:effect];
-    _visualEffectView.frame = CGRectMake(0, 0, self.bloomSize.width * 2, self.bloomSize.height * 2);
+    _visualEffectView.frame = CGRectMake(0, 0, self.bloomSize.width, self.bloomSize.height);
+    
+    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.bloomSize.width, self.foldCenter.y - self.bloomRadius - 25.5f) collectionViewLayout:[UICollectionViewFlowLayout new]];
+    _collectionView.backgroundColor = [UIColor redColor];
+    UINib* nib = [UINib nibWithNibName:@"DCPathCollectionViewCell" bundle:[NSBundle bundleForClass:[self class]]];
+    [_collectionView registerNib:nib forCellWithReuseIdentifier:DCPathCollectionViewCellReuseId];
+    
+    NSArray* array = @[@"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--"];
+    self.source = [DCPathButtonCollectionViewDataSource new];
+    self.source.items = array;
+    
+    _collectionView.dataSource = self.source;
 }
 
 #pragma mark - Configure Button Sound
@@ -375,6 +389,7 @@
         self.pathCenterButton.center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
         
         [self.visualEffectView removeFromSuperview];
+        [self.collectionView removeFromSuperview];
     });
     
     _bloom = NO;
@@ -456,8 +471,10 @@
     //
     self.frame = CGRectMake(0, 0, self.bloomSize.width, self.bloomSize.height);
     self.center = CGPointMake(self.bloomSize.width / 2, self.bloomSize.height / 2);
+    self.collectionView.frame = CGRectMake(0, 100, self.bloomSize.width, self.foldCenter.y - self.bloomRadius - 25.5f - 100);
     
     [self insertSubview:self.visualEffectView belowSubview:self.pathCenterButton];
+    [self insertSubview:self.collectionView aboveSubview:self.visualEffectView];
         
     // 4. Excute the center button rotation animation
     //

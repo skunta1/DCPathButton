@@ -7,6 +7,7 @@
 //
 
 #import "DCPathItemButton.h"
+#import "DCPathCollectionViewCellObject.h"
 
 @import UIKit;
 @import QuartzCore;
@@ -187,4 +188,5 @@ typedef NS_ENUM(NSUInteger, kDCPathButtonBloomDirection) {
  */
 - (void)addPathItems:(NSArray *)pathItemButtons;
 
+- (void)addCollecitonViewItems: (NSArray*)collectionViewItems;
 @end

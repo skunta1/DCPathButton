@@ -20,7 +20,8 @@
   },
   "source_files": "DCPathButton/Classes/*.{h,m}",
   "resources": [
-    "DCPathButton/Sounds/*"
+    "DCPathButton/Sounds/*",
+    "DCPathButton/Views/*"
   ],
   "frameworks": [
     "QuartzCore",
