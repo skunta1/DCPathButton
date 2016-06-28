@@ -8,8 +8,9 @@
 
 #import "DCPathButton.h"
 #import "DCPathButtonCollectionViewDataSource.h"
+#import "DCPathCollectionViewCell.h"
 
-@interface DCPathButton ()<DCPathItemButtonDelegate>
+@interface DCPathButton ()<DCPathItemButtonDelegate, UICollectionViewDelegate>
 
 #pragma mark - Private Property
 
@@ -136,16 +137,14 @@
     _visualEffectView = [[UIVisualEffectView alloc] initWithEffect:effect];
     _visualEffectView.frame = CGRectMake(0, 0, self.bloomSize.width, self.bloomSize.height);
     
-    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.bloomSize.width, self.foldCenter.y - self.bloomRadius - 25.5f) collectionViewLayout:[UICollectionViewFlowLayout new]];
-    _collectionView.backgroundColor = [UIColor redColor];
-    UINib* nib = [UINib nibWithNibName:@"DCPathCollectionViewCell" bundle:[NSBundle bundleForClass:[self class]]];
+    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(40, 0, self.bloomSize.width - 40, self.foldCenter.y - self.bloomRadius - 25.5f) collectionViewLayout:[UICollectionViewFlowLayout new]];
+    UINib* nib = [UINib nibWithNibName:NSStringFromClass([DCPathCollectionViewCell class]) bundle:[NSBundle bundleForClass:[self class]]];
     [_collectionView registerNib:nib forCellWithReuseIdentifier:DCPathCollectionViewCellReuseId];
+    _collectionView.backgroundColor = [UIColor clearColor];
     
-    NSArray* array = @[@"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--", @"--"];
     self.source = [DCPathButtonCollectionViewDataSource new];
-    self.source.items = array;
-    
     _collectionView.dataSource = self.source;
+    _collectionView.delegate = self;
 }
 
 #pragma mark - Configure Button Sound
@@ -471,7 +470,7 @@
     //
     self.frame = CGRectMake(0, 0, self.bloomSize.width, self.bloomSize.height);
     self.center = CGPointMake(self.bloomSize.width / 2, self.bloomSize.height / 2);
-    self.collectionView.frame = CGRectMake(0, 100, self.bloomSize.width, self.foldCenter.y - self.bloomRadius - 25.5f - 100);
+    self.collectionView.frame = CGRectMake(40, 100, self.bloomSize.width - 80, self.foldCenter.y - self.bloomRadius - 25.5f - 100);
     
     [self insertSubview:self.visualEffectView belowSubview:self.pathCenterButton];
     [self insertSubview:self.collectionView aboveSubview:self.visualEffectView];
@@ -583,6 +582,9 @@
     [self.itemButtons addObjectsFromArray:pathItemButtons];
 }
 
+- (void)addCollecitonViewItems:(NSArray *)collectionViewItems{
+    self.source.items = collectionViewItems;
+}
 #pragma mark - DCPathButton Touch Event
 
 - (void)touchesBegan:(NSSet *)touches
@@ -659,4 +661,11 @@
     return YES;
 }
 
+#pragma mark - UICollectionView Delegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if ([_delegate respondsToSelector:@selector(pathButton:clickCollectionItemAtIndex:)]) {
+        [_delegate pathButton:self clickCollectionItemAtIndex:indexPath.row];
+    }
+}
 @end

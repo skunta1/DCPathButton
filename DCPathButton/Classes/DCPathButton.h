@@ -66,6 +66,8 @@ typedef NS_ENUM(NSUInteger, kDCPathButtonBloomDirection) {
  */
 - (void)pathButton:(DCPathButton *)dcPathButton clickItemButtonAtIndex:(NSUInteger)itemButtonIndex;
 
+- (void)pathButton:(DCPathButton *)dcPathButton clickCollectionItemAtIndex:(NSUInteger)collectionItemIndex;
+
 @optional
 
 /*!
@@ -189,4 +191,5 @@ typedef NS_ENUM(NSUInteger, kDCPathButtonBloomDirection) {
 - (void)addPathItems:(NSArray *)pathItemButtons;
 
 - (void)addCollecitonViewItems: (NSArray*)collectionViewItems;
+
 @end
